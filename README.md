@@ -7,78 +7,104 @@ I've never looked back since then.
 
 Here is a brief rundown of setup, configuration and modification of my
 environment:
+<br>
 
 
 ## WSL
 ### Enable WSL
 * Follow [these](https://www.wikihow.com/Enable-the-Windows-Subsystem-for-Linux)
-  instructions to enable WSL. 
+  instructions to enable WSL.
 
 ### Configuration
-Set change default user from root to new user
+#### User
 
-Create user
-- useradd <user>
+Create user and add to sudoers group
+```bash
+useradd <user>
+usermod -aG sudo <user>
+```
 
-Add to sudoers
-- usermod -aG sudo <user>
+Tell Bash on Ubuntu to use username by default (run in cmd or powershell).
+```
+LxRun /setdefaultuser <user>
+```
 
-Tell Bash on Ubuntu to use username by default
-- LxRun /setdefaultuser <user>
+#### Host
+Add host machine name (`$HOSTNAME`) to `/etc/hosts` file.
 
-unable to resolve host error
-rewrite  
 `vi /etc/hosts`
 
-```bash
+```
 127.0.0.1 localhost
 127.0.0.1 <$HOSTNAME>
 ```
-
-https://iamnotmyself.com/2016/07/13/windows-subsystem-for-linux-error-unable-to-resolve-host-2/
-
+<br>
 
 
-## Shell Configuration
-
-### ZSH
-#### Installation
+## ZSH
+### Installation
 
 `sudo apt-get install zsh`
 
 `vi ~/.bashrc`
 
+### Configuration
+#### Default Shell
+
+`vi ~/.bashrc`
+
+The following lines will ensure that Bash only launches Zsh when you open a Bash
+window. This will avoid causing problems for other software.
+
 ```bash
-# Enable Zsh on startup
 if [ -t 1 ]; then
   exec zsh
 fi
 ```
-
-rewrite below instructions  
-https://medium.com/@uniqvinh/use-zsh-in-wsl-on-windows-10-5d439a749c4c
-
-
+<br>
 
 ## Git
+### Installation
+Install git.
 
 `sudo apt-get install git`
 
+
+### Modifications
 git log aliases
+```bash
+# Github log visualization
+alias lg='git log \
+  --graph \
+  --abbrev-commit \
+  --decorate \
+  --format=format:"%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)"'
+alias lg2='git log \
+  --graph \
+  --abbrev-commit \
+  --decorate \
+  --format=format:"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''%C(white)%s%C(reset) %C(dim white)- %an%C(reset)"'
+alias lg3='git log \
+  --graph \
+  --abbrev-commit \
+  --decorate \
+  --format=format:"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(bold yellow)%d%C(reset)%n''%C(white)%s%C(reset)%n''%C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)"'
+```
+<br>
 
 
-
-
-
-### Oh-My-Zsh
-
-https://github.com/robbyrussell/oh-my-zsh
-
-
-## hyper configuration
+## Hyper
+## Installation
+## Configuration
 - gpu blacklist
  - Add `--ignore-gpu-blacklist` to hyper shortcut
 - monokai theme
  - `plugins: ['hyperterm-monokai'],`
 - fonts/size
  - inconsolata
+<br>
+
+
+## Oh-My-Zsh
+
+https://github.com/robbyrussell/oh-my-zsh
